@@ -33,7 +33,7 @@ To get a local copy of the project up and running, follow these steps:
 
 1. **Clone the Repository**:
    git clone https://github.com/FarmerSamuel-FS/PP3-Spotify.git
-Navigate to the Project Directory:
+   Navigate to the Project Directory:
 
 cd PP3-Spotify
 Install Dependencies:
