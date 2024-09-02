@@ -4,14 +4,13 @@ console.log("Environment Test - MONGO_URI:", process.env.MONGO_URI);
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./mongoConfig");
-const userRoutes = require("./routes/routes");
 const passport = require("passport");
 const session = require("express-session");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const SpotifyStrategy = require("passport-spotify").Strategy;
 const jwt = require("jsonwebtoken");
-const User = require("./models/users"); // Assuming you have a User model
+const User = require("./models/users");
 
 const app = express();
 
@@ -23,7 +22,7 @@ app.use(express.json());
 // Session setup
 app.use(
   session({
-    secret: "your_secret_key",
+    secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }, // Set to true in production with HTTPS
@@ -37,7 +36,7 @@ app.use(passport.session());
 // JWT Strategy Configuration
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: "your_jwt_secret_key",
+  secretOrKey: process.env.JWT_SECRET,
 };
 
 passport.use(
@@ -87,7 +86,7 @@ passport.use(
             spotifyId: user.spotifyId,
             accessToken: user.accessToken,
           },
-          "your_jwt_secret_key",
+          process.env.JWT_SECRET,
           { expiresIn: "1h" },
         );
 
@@ -109,21 +108,40 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-const PORT = process.env.PORT || 3001;
-
-app.use("/api", userRoutes); // Use the user routes under the /api path
-
 // Import and use the authentication routes
-const authRoutes = require("./routes/auth"); // Adjust the path if necessary
-app.use("/", authRoutes);
+const authRoutes = require("./routes/auth");
+app.use("/auth", authRoutes);
 
-app.get("/", (req, res) => {
+// Middleware to protect routes
+const protectRoute = (req, res, next) => {
+  const token = req.query.token || req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Access denied, no token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
+// Protected route example
+app.get("/", protectRoute, (req, res) => {
   res.send("Hello, PP3-Spotify!");
 });
 
+// Fallback route for 404 errors
 app.use((req, res) => {
   res.status(404).send("Route not found");
 });
+
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

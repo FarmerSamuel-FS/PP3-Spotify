@@ -8,15 +8,15 @@ const UserSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: false, // Make optional
+    required: false, // Optional
   },
   email: {
     type: String,
-    required: false, // Make optional
+    required: false, // Optional
   },
   password: {
     type: String,
-    required: false, // Make optional
+    required: false, // Optional
   },
   accessToken: {
     type: String,
