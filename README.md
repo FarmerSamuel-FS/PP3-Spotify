@@ -2,28 +2,28 @@
 
 ## Project Overview
 
-This project is a music search application built with React on the frontend and Express on the backend. The app integrates with Spotify's REST Web API to allow users to search for artists, albums, and tracks. Currently, the frontend displays user database information, but the ultimate goal is to provide a seamless Spotify music search experience with user authentication, JWT-based security, and interactive UI.
+PP3-Spotify is a music search application built with React on the frontend and Express on the backend. The app integrates with Spotify's REST Web API to allow users to search for artists, albums, and tracks. The ultimate goal is to provide a seamless Spotify music search experience with user authentication, JWT-based security, and an interactive UI.
 
 ### **Project Vision**
 
-- **Spotify Authentication with JWT**: Users will log in using their Spotify credentials. The app will use Spotify's OAuth 2.0 Authorization Code flow, with Passport.js and JWT to securely authenticate users and manage sessions.
-- **Music Search Functionality**: Users will search for artists, albums, and tracks using the Spotify API, and the results will be displayed dynamically on the frontend.
-- **Interactive UI**: The UI will be updated to provide an intuitive and visually appealing experience, including Spotify web player links directly within search results.
-- **Secure Credential Management**: All secret credentials will be securely stored in environment variables and not visible in the repository.
+- **Spotify Authentication with JWT**: Users log in using their Spotify credentials, with secure authentication handled via Spotify's OAuth 2.0 Authorization Code flow, Passport.js, and JWT.
+- **Music Search Functionality**: Users search for artists, albums, and tracks using the Spotify API, with results dynamically displayed on the frontend.
+- **Interactive UI**: An intuitive and visually appealing user interface, featuring Spotify web player links directly within search results.
+- **Secure Credential Management**: All sensitive credentials are securely stored in environment variables and not visible in the repository.
 
 ## Current Progress
 
-### Completed Features
+### **Completed Features**
 
 - **User Management**: The frontend currently displays user information stored in the database at `localhost:3000`.
-- **Spotify Authentication**: Spotify login is working at `localhost:3001/login`, using Passport.js and JWT for secure authentication.
-- **Token Management**: JWT is implemented, and tokens are securely handled, including testing with invalid tokens.
+- **Spotify Authentication**: Spotify login is operational at `localhost:3001/login`, using Passport.js and JWT for secure authentication.
+- **Token Management**: JWT is implemented for secure token handling, with validation logic for invalid tokens.
 
-### Next Steps
+### **Next Steps**
 
-- **Integrate Spotify API**: Implement the ability to search for artists, albums, and tracks directly from the frontend.
-- **Update Frontend**: Replace the current user list display with Spotify search results and integrate the Spotify web player links.
-- **Handle Token Expiration**: Implement token refresh logic to maintain session persistence without requiring frequent re-authentication.
+- **Implement Spotify API Integration**: Create an API route to handle search queries and retrieve results from Spotify’s catalog.
+- **Update Frontend**: Replace the current user list with Spotify search results, and integrate Spotify web player links.
+- **Token Expiration Handling**: Add token refresh logic to maintain session persistence and a smooth user experience.
 
 ## Prerequisites
 
@@ -38,14 +38,14 @@ Before you begin, ensure you have met the following requirements:
 
 ## Getting Started
 
-To get a local copy of the project up and running, follow these steps:
-
-### Installation
+### **Installation**
 
 1. **Clone the Repository**:
+   ```bash
    git clone https://github.com/FarmerSamuel-FS/PP3-Spotify.git
    Navigate to the Project Directory:
    cd PP3-Spotify
+   ```
 
 Install Dependencies:
 npm install
@@ -58,32 +58,29 @@ Running the Application
 
 Run the Backend Server:
 npm run server
-
 Run the Frontend Application:
 npm start
 
 Testing
 
-Spotify Login:
-Access the Spotify login by navigating to http://localhost:3001/login.
-After logging in with Spotify, you will be redirected to the callback route.
+Spotify Login: Access the Spotify login by navigating to http://localhost:3001/login. After logging in, you will be redirected to the callback route.
 
-View User Information:
-The frontend at http://localhost:3000 currently displays user information from the database.
+Search for Music: Once the search functionality is implemented, test the ability to search Spotify’s catalog directly from the frontend.
+
 Roadmap to Completion
 
 Future Enhancements
-
 Spotify API Integration: Implement the ability to search Spotify's catalog directly from the frontend, display results, and provide Spotify web player links.
-
 Responsive Design: Ensure the UI is responsive and works well on various devices, including mobile.
-
 User Dashboard: Create a personalized user dashboard that displays favorite artists, recently played tracks, and other personalized Spotify data.
 Environment Variables
 
 The application requires several environment variables for configuration. These variables should be stored in a .env file in the root directory.
 
-Here's a template of the required variables, which is provided in the .env.dist file:
+Here’s a template of the required variables, which is provided in the .env.dist file:
+
+bash
+Copy code
 
 # MongoDB connection URI
 
@@ -97,14 +94,24 @@ PORT=3001
 
 SPOTIFY_CLIENT_ID=your_spotify_client_id_here
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
-SPOTIFY_REDIRECT_URI=http://localhost:3001/callback
+SPOTIFY_REDIRECT_URI=http://localhost:3001/auth/callback
 
 # JWT secret for signing tokens
 
 JWT_SECRET=your_jwt_secret_key_here
-
-## Links:
+Links:
 
 Local Backend URL: http://localhost:3001
 Frontend URL: http://localhost:3000
-GitHub Repository: https://github.com/FarmerSamuel-FS/PP3-Spotify
+GitHub Repository: PP3-Spotify
+sql
+Copy code
+
+This README file reflects your current progress and what remains to be done, providing clear instructions for anyone working on the project.
+
+### **Next Steps**
+
+- **Focus on implementing the Spotify API search functionality** on the backend and ensuring it integrates smoothly with the frontend.
+- **Complete the frontend components** for displaying search results, handling user authentication, and managing sessions.
+
+If you need further assistance with any of these steps, feel free to ask!
