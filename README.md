@@ -35,7 +35,7 @@ The project is divided into two main directories:
 
 Start by cloning the repository to your local machine:
 
-git clone https://github.com/your-username/PP3-Spotify.git
+git clone https://github.com/FarmerSamuel-FS/PP3-Spotify.git
 cd PP3-Spotify
 
 2. Install Dependencies
