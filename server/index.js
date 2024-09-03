@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
+const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const SpotifyStrategy = require("passport-spotify").Strategy;
 const connectDB = require("./config/mongoConfig");
@@ -23,7 +24,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: { secure: false }, // Set to true in production with HTTPS
   }),
 );
 
@@ -31,7 +32,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Spotify OAuth Strategy
+// JWT Strategy Configuration
 passport.use(
   new SpotifyStrategy(
     {
@@ -55,6 +56,7 @@ passport.use(
           user.tokenExpires = Date.now() + expires_in * 1000;
         }
 
+        // Generate JWT
         const jwtToken = jwt.sign(
           {
             spotifyId: user.spotifyId,
@@ -90,10 +92,6 @@ passport.deserializeUser((id, done) => {
 // Import and use the authentication routes
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
-
-// Import and use the search routes
-const searchRoutes = require("./routes/routes");
-app.use("/api", searchRoutes);
 
 // Middleware to protect routes
 const protectRoute = (req, res, next) => {

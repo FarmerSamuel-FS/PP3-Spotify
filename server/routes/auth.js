@@ -21,8 +21,8 @@ router.get("/callback", (req, res, next) => {
       return res.redirect("/");
     }
 
-    // Redirect to home with the token
-    res.redirect("/?token=" + data.token);
+    // Redirect to React frontend with token
+    res.redirect(`http://localhost:3000?token=${data.token}`);
   })(req, res, next);
 });
 
