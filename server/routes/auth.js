@@ -7,7 +7,7 @@ router.get(
   "/login",
   passport.authenticate("spotify", {
     scope: ["user-read-email", "user-read-private"],
-    showDialog: true,
+    showDialog: true, // Optional: show Spotify's consent dialog on each login
   }),
 );
 

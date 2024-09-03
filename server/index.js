@@ -91,7 +91,10 @@ passport.deserializeUser((id, done) => {
 
 // Import and use the authentication routes
 const authRoutes = require("./routes/auth");
+const searchRoutes = require("./routes/routes");
+
 app.use("/auth", authRoutes);
+app.use("/api/search", searchRoutes);
 
 // Middleware to protect routes
 const protectRoute = (req, res, next) => {
