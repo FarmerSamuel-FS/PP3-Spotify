@@ -1,66 +1,40 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
+const protectRoute = require("../middleware/authMiddleware");
 const User = require("../models/users");
 
-// Create a new user
-router.post("/users", async (req, res) => {
-  try {
-    const newUser = new User(req.body);
-    await newUser.save();
-    res.status(201).json(newUser);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+// Search route
+router.get("/search", protectRoute, async (req, res) => {
+  const query = req.query.q;
+  if (!query) {
+    return res.status(400).json({ message: "No search query provided" });
   }
-});
 
-// Get all users
-router.get("/users", async (req, res) => {
   try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Get a single user by ID
-router.get("/users/:id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    const user = await User.findOne({ spotifyId: req.user.spotifyId });
+    if (!user || !user.accessToken) {
+      return res
+        .status(401)
+        .json({ message: "Invalid or missing access token" });
     }
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
-// Update a user by ID
-router.put("/users/:id", async (req, res) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+    const response = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+      params: {
+        q: query,
+        type: "artist,album,track", // Adjust types based on your needs
+      },
     });
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    res.json(updatedUser);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
 
-// Delete a user by ID
-router.delete("/users/:id", async (req, res) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-    if (!deletedUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    res.json({ message: "User deleted" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error searching Spotify:", error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while searching Spotify" });
   }
 });
 

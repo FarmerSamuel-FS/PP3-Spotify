@@ -6,18 +6,6 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  name: {
-    type: String,
-    required: false, // Optional
-  },
-  email: {
-    type: String,
-    required: false, // Optional
-  },
-  password: {
-    type: String,
-    required: false, // Optional
-  },
   accessToken: {
     type: String,
     required: true,
@@ -26,6 +14,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
   tokenExpires: {
+    type: Date,
+  },
+  jwtToken: {
+    type: String,
+  },
+  jwtTokenExpires: {
     type: Date,
   },
   createdAt: {

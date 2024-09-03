@@ -7,7 +7,7 @@ router.get(
   "/login",
   passport.authenticate("spotify", {
     scope: ["user-read-email", "user-read-private"],
-    showDialog: true, // Optional: show Spotify's consent dialog on each login
+    showDialog: true,
   }),
 );
 
@@ -21,16 +21,9 @@ router.get("/callback", (req, res, next) => {
       return res.redirect("/");
     }
 
-    // Send the JWT to the client
+    // Redirect to home with the token
     res.redirect("/?token=" + data.token);
   })(req, res, next);
-});
-
-// Logout route (optional)
-router.get("/logout", (req, res) => {
-  req.logout(() => {
-    res.redirect("/");
-  });
 });
 
 module.exports = router;

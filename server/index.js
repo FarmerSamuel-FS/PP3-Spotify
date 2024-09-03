@@ -1,60 +1,37 @@
 require("dotenv").config();
-console.log("Environment Test - MONGO_URI:", process.env.MONGO_URI);
-
 const express = require("express");
 const cors = require("cors");
-const connectDB = require("./mongoConfig");
-const passport = require("passport");
 const session = require("express-session");
-const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
-const SpotifyStrategy = require("passport-spotify").Strategy;
+const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const SpotifyStrategy = require("passport-spotify").Strategy;
+const connectDB = require("./config/mongoConfig");
 const User = require("./models/users");
 
 const app = express();
 
+// Connect to MongoDB
 connectDB();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
 // Session setup
 app.use(
   session({
-    secret: process.env.JWT_SECRET,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, // Set to true in production with HTTPS
+    cookie: { secure: false },
   }),
 );
 
-// Passport setup
+// Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// JWT Strategy Configuration
-const opts = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET,
-};
-
-passport.use(
-  new JwtStrategy(opts, async (jwt_payload, done) => {
-    try {
-      const user = await User.findOne({ spotifyId: jwt_payload.spotifyId });
-      if (user) {
-        return done(null, user);
-      } else {
-        return done(null, false);
-      }
-    } catch (err) {
-      return done(err, false);
-    }
-  }),
-);
-
-// Spotify Strategy Configuration
+// Spotify OAuth Strategy
 passport.use(
   new SpotifyStrategy(
     {
@@ -64,10 +41,9 @@ passport.use(
     },
     async (accessToken, refreshToken, expires_in, profile, done) => {
       try {
-        // Check if user exists, or create a new user
         let user = await User.findOne({ spotifyId: profile.id });
         if (!user) {
-          user = await User.create({
+          user = new User({
             spotifyId: profile.id,
             accessToken: accessToken,
             refreshToken: refreshToken,
@@ -77,11 +53,9 @@ passport.use(
           user.accessToken = accessToken;
           user.refreshToken = refreshToken;
           user.tokenExpires = Date.now() + expires_in * 1000;
-          await user.save();
         }
 
-        // Generate JWT
-        const token = jwt.sign(
+        const jwtToken = jwt.sign(
           {
             spotifyId: user.spotifyId,
             accessToken: user.accessToken,
@@ -90,7 +64,12 @@ passport.use(
           { expiresIn: "1h" },
         );
 
-        return done(null, { user, token }); // Pass the token to the callback
+        user.jwtToken = jwtToken;
+        user.jwtTokenExpires = Date.now() + 3600 * 1000;
+
+        await user.save();
+
+        return done(null, { user, token: jwtToken });
       } catch (err) {
         return done(err);
       }
@@ -111,6 +90,10 @@ passport.deserializeUser((id, done) => {
 // Import and use the authentication routes
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
+
+// Import and use the search routes
+const searchRoutes = require("./routes/routes");
+app.use("/api", searchRoutes);
 
 // Middleware to protect routes
 const protectRoute = (req, res, next) => {
@@ -133,7 +116,7 @@ const protectRoute = (req, res, next) => {
 
 // Protected route example
 app.get("/", protectRoute, (req, res) => {
-  res.send("Hello, PP3-Spotify!");
+  res.send("Hello, Spotify Music App!");
 });
 
 // Fallback route for 404 errors
