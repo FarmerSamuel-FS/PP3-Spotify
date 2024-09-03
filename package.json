@@ -1,15 +1,13 @@
 {
   "name": "pp3-spotify",
   "version": "1.0.0",
-  "description": "## Project Overview",
-  "main": "index.js",
+  "description": "Spotify Music Search App using React and Express",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client": "npm start --prefix client/spotify",
+    "server": "npm start --prefix server",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^7.6.0"
   }
 }

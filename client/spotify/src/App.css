@@ -1,38 +1,132 @@
-.App {
+/* Reset some basic styling */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+/* Centering the search input field and button */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Center header and main content */
+header {
+  background-color: #1db954;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* Allow positioning of logout button */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.5rem;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+main {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #181818;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  min-height: 100vh; /* Ensure the content area fills the viewport height */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: flex-start; /* Keep content at the top */
+}
+
+.login-container {
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #1db954;
   color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 0; /* Align with input field */
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  background-color: #17a44a;
+}
+/* Space between input field and search button */
+input[type="text"] {
+  width: 60%;
+  padding: 10px;
+  margin-right: 10px; /* Space between input and button */
+  border-radius: 4px;
+  border: 1px solid #333;
+  background-color: #333;
+  color: #e0e0e0;
+  font-size: 1rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.logout-button:hover {
+  background-color: #e03a3a;
+}
+
+/* Styling for the results sections */
+.results-section {
+  margin-top: 40px;
+}
+
+.results-section h2 {
+  color: #1db954;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.result-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.result-item {
+  background-color: #181818;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.result-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.result-item p {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #e0e0e0;
 }

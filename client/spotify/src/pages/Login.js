@@ -6,7 +6,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login to Spotify</h2>
       <button onClick={handleLogin}>Login with Spotify</button>
     </div>

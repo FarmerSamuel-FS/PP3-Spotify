@@ -2,98 +2,174 @@
 
 ## Project Overview
 
-PP3-Spotify Music Search App is a web application that allows users to search for music through Spotify's API. The application is built with a React frontend and an Express backend, integrating Spotify's REST Web API for a seamless music search experience. It features user authentication through Spotify's OAuth 2.0 flow, secured with JWT.
+The PP3-Spotify Music Search App is a web application that allows users to search for artists, albums, and tracks using the Spotify API. Users can log in with their Spotify credentials, perform searches, and click on results to open them directly in Spotify’s web player.
 
-### **Project Vision**
+This project was created as part of a class assignment to demonstrate the integration of Spotify’s API with a React frontend and an Express backend. The application is designed to showcase a full-stack development approach using modern web technologies.
 
-- **Spotify Authentication with JWT**: Users can log in using their Spotify credentials, with secure authentication handled via Spotify's OAuth 2.0, Passport.js, and JWT.
-- **Music Search Functionality**: Users can search for artists, albums, and tracks using the Spotify API, with results dynamically displayed on the frontend.
-- **Interactive UI**: The application features an intuitive and visually appealing user interface, allowing users to interact with their search results.
-- **Secure Credential Management**: Sensitive credentials are securely stored in environment variables and not exposed in the repository.
+## Features
 
-## Current Progress
-
-### **Completed Features**
-
-- **Spotify Authentication**: Users can log in via Spotify, with JWT securely generated and stored in MongoDB.
-- **Token Management**: JWT is implemented for secure token handling, with validation logic for expired tokens.
-- **Spotify API Search**: Backend route `/api/search` allows users to query the Spotify catalog for albums, artists, and tracks, returning relevant search results.
-
-### **Next Steps**
-
-- **Frontend Implementation**: Develop the frontend components to display search results, manage user sessions, and handle user authentication.
-- **Responsive Design**: Ensure the UI is responsive and works well on various devices, including mobile.
-- **Additional Features**: Create a user dashboard to display favorite artists, recently played tracks, and personalized Spotify data.
+    •	Spotify OAuth Authentication: Securely log in using your Spotify account.
+    •	Search Functionality: Search for albums, artists, and tracks.
+    •	Clickable Links: Open albums, artists, and tracks directly in Spotify’s web player.
+    •	Responsive UI: A modern dark-themed design that works across various devices.
 
 ## Prerequisites
 
-Before you begin, ensure you have met the following requirements:
+Before you begin, ensure you have the following installed on your system:
 
-- **Node.js**: Version 14.x or higher
-- **npm**: Version 6.x or higher
-- **React**: Installed as a dependency
-- **Express**: Installed as a dependency
-- **Spotify Developer Account**: Sign up at [Spotify Developer](https://developer.spotify.com/) to obtain the necessary API credentials.
-- **MongoDB**: Installed and running locally or on a cloud service like MongoDB Atlas.
+    •	Node.js (version 14.x or later)
+    •	npm (comes with Node.js) or yarn
+    •	MongoDB (local or cloud instance)
+    •	Spotify Developer Account
+
+## Project Structure
+
+The project is divided into two main directories:
+
+    •	client/spotify/: Contains the React frontend application.
+    •	server/: Contains the Express backend application.
 
 ## Getting Started
 
-### **Installation**
+1. Clone the Repository
 
-1. **Clone the Repository**:
-   `git clone https://github.com/FarmerSamuel-FS/SpotifyMusicApp.git`
-2. **Navigate to the Project Directory**:
-   `cd SpotifyMusicApp`
+Start by cloning the repository to your local machine:
 
-3. **Install Dependencies**:
-   `npm install`
+git clone https://github.com/your-username/PP3-Spotify.git
+cd PP3-Spotify
 
-4. **Set Up Environment Variables**:
-   Copy the contents of `.env.dist` to a new file named `.env` in the root of the project and fill in the required values.
-   `cp .env.dist .env`
+2. Install Dependencies
 
-### **Running the Application**
+Install dependencies for both the server and client: # Install server dependencies
 
-1. **Run the Backend Server**:
-   `npm run server`
+    cd server
+    npm install
 
-2. **Run the Frontend Application**:
-   `npm start`
+    # Install client dependencies
 
-### **Testing**
+    cd ../client
+    npm install
 
-1. **Spotify Login**: Access the Spotify login by navigating to `http://localhost:3001/auth/login`. After logging in, you will be redirected to the callback route.
+3. \*\*Setup Environment Variables: - Create a .env file in the server/ directory with the following contents:
 
-2. **Search for Music**: Use Postman or the frontend UI to query the Spotify API for music by artists, albums, or tracks.
+   MONGO_URI=mongodb://localhost:27017/pp3-spotify
+   PORT=3001
+   SPOTIFY_CLIENT_ID=your_spotify_client_id
+   SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+   SPOTIFY_REDIRECT_URI=http://localhost:3001/auth/callback
+   JWT_SECRET=your_jwt_secret
+   SESSION_SECRET=your_session_secret
 
-## Roadmap to Completion
+Replace the placeholders with your actual Spotify credentials and secrets.
 
-### **Future Enhancements**
+4. Start the Application
 
-- **User Dashboard**: Create a personalized user dashboard that displays favorite artists, recently played tracks, and other personalized Spotify data.
-- **Advanced Search Filters**: Implement additional filters for more refined search results, such as genre, release date, and popularity.
-- **Playlist Management**: Allow users to create and manage Spotify playlists directly from the app.
+This will start the client on http://localhost:3000 and the server on http://localhost:3001.
 
-## Environment Variables
+npm run dev
 
-The application requires several environment variables for configuration. These variables should be stored in a `.env` file in the root directory.
+5. Access the Application
 
-Here’s a template of the required variables, which is provided in the `.env.dist` file:
+Open your browser and navigate to http://localhost:3000 to access the application. You will be prompted to log in with your Spotify account.
 
-## MongoDB connection URI
+## Usage
 
-MONGO_URI=mongodb://localhost:27017/pp3-spotify
+## Login
 
-## Express server port
+    •	Click the “Login with Spotify” button to authenticate with your Spotify account.
+    •	Upon successful login, you will be redirected to the search page.
 
-PORT=3001
+## Search
 
-## Spotify API credentials
+    •	Enter a search term in the input field (e.g., “Queen”) and click “Search”.
+    •	The application will display albums, artists, and tracks related to your search term.
 
-SPOTIFY_CLIENT_ID=your_spotify_client_id_here
-SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
-SPOTIFY_REDIRECT_URI=http://localhost:3001/auth/callback
+## Click on Results
 
-## JWT secret for signing tokens
+    •	Each result (album, artist, or track) is clickable and will open the corresponding Spotify page in a new tab.
 
-JWT_SECRET=your_jwt_secret_key_here
+## Troubleshooting
+
+Common Issues
+
+    •	504 Gateway Timeout: If you encounter this error when clicking on a link, it may be due to temporary issues with Spotify’s servers. Try refreshing the page or searching for another term.
+    •	Login Issues: Ensure your Spotify developer credentials are correct in the .env file.
+    •	MongoDB Connection: Make sure your MongoDB instance is running and accessible via the MONGO_URI you provided.
+
+Logging
+
+The server logs provide useful information for debugging and can be found in the terminal where the server is running. Check the logs for errors related to Spotify API requests, JWT authentication, or MongoDB connections.
+
+Contributing
+
+This project is part of a class assignment, but contributions for learning purposes are welcome. If you find an issue or have a suggestion, feel free to fork the repository and create a pull request.
+
+License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+Acknowledgments
+
+    •	Spotify API Documentation
+    •	Create React App
+    •	Express.js Documentation
+
+Additional Notes for Classmates:
+
+    •	Ensure that your Spotify Developer credentials are set up correctly in the .env file.
+    •	The MongoDB instance can be local or cloud-based (e.g., MongoDB Atlas).
+    •	If you encounter any issues, check the console logs in both the browser (for client-side issues) and the terminal (for server-side issues).
+
+his will start the client on http://localhost:3000 and the server on http://localhost:3001.
+
+5. Access the Application
+
+Open your browser and navigate to http://localhost:3000 to access the application. You will be prompted to log in with your Spotify account.
+
+Usage
+
+Login
+
+    •	Click the “Login with Spotify” button to authenticate with your Spotify account.
+    •	Upon successful login, you will be redirected to the search page.
+
+Search
+
+    •	Enter a search term in the input field (e.g., “Queen”) and click “Search”.
+    •	The application will display albums, artists, and tracks related to your search term.
+
+Click on Results
+
+    •	Each result (album, artist, or track) is clickable and will open the corresponding Spotify page in a new tab.
+
+Troubleshooting
+
+Common Issues
+
+    •	504 Gateway Timeout: If you encounter this error when clicking on a link, it may be due to temporary issues with Spotify’s servers. Try refreshing the page or searching for another term.
+    •	Login Issues: Ensure your Spotify developer credentials are correct in the .env file.
+    •	MongoDB Connection: Make sure your MongoDB instance is running and accessible via the MONGO_URI you provided.
+
+Logging
+
+The server logs provide useful information for debugging and can be found in the terminal where the server is running. Check the logs for errors related to Spotify API requests, JWT authentication, or MongoDB connections.
+
+Contributing
+
+This project is part of a class assignment, but contributions for learning purposes are welcome. If you find an issue or have a suggestion, feel free to fork the repository and create a pull request.
+
+License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+Acknowledgments
+
+    •	Spotify API Documentation
+    •	Create React App
+    •	Express.js Documentation
+
+Additional Notes for Classmates:
+
+    •	Ensure that your Spotify Developer credentials are set up correctly in the .env file.
+    •	The MongoDB instance can be local or cloud-based (e.g., MongoDB Atlas).
+    •	If you encounter any issues, check the console logs in both the browser (for client-side issues) and the terminal (for server-side issues).
